@@ -48,10 +48,12 @@ module FileBsearch
         until file.getc.match(/[\n\r]/)
 
           # move pointer to before character
-          # - if EOS, break
-          begin
+          if file.pos > 1
             file.seek(-2, IO::SEEK_CUR)
-          rescue Errno::EXXX
+          else
+
+            # if EOS, break
+            file.rewind
             break
           end
         end
