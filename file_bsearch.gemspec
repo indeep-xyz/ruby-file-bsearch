@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["indeep.xyz@gmail.com"]
   spec.summary       = %q{binary search for sorted text file.}
   spec.description   = %q{binary search for sorted text file. it is effective when file size is bigger.}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/indeep-xyz/ruby-file-bsearch/"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
