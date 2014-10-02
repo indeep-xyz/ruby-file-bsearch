@@ -5,7 +5,7 @@ module FileBsearch
     #   Array object
     def get_lines(target, prefix, *args)
 
-      result = []
+      prefix = prefix.to_s
       file   = to_file(target)
 
       # pass to scan method
@@ -19,7 +19,7 @@ module FileBsearch
         result = around_lines(file, pos, needle)
       end
 
-      result
+      result || []
     end
 
     private
