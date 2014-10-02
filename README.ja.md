@@ -1,9 +1,9 @@
 FileBsearch
 ====
 
-library for Ruby.
+Ruby 用のライブラリです。
 
-binary search for sorted text file. it is effective when file size is bigger.
+ソート済みのテキストファイルに対してバイナリサーチ (二分探索) をおこないます。巨大なファイルに対して効果的です。
 
 ## Installation
 
@@ -13,7 +13,7 @@ gem install file_bsearch
 
 ## Usage
 
-### check to exist line that identical with passed string
+### 指定文字列の行が、ファイル内に存在するか
 
 ```ruby
 FileBsearch.exist?(path, string)
@@ -24,10 +24,9 @@ file = open(path)
 file.bsearch?(string)
 ```
 
-if exists, return true.
-if not exists, return false.
+存在する場合は true 、存在しない場合は false が返ります。
 
-### search position in file for the line that is identical with passed string
+### 指定文字列の行が、ファイル内のどの位置にあるか
 
 ```ruby
 FileBsearch.index(path, string)
@@ -38,10 +37,9 @@ file = open(path)
 file.bsearch(string)
 ```
 
-if exists, return Integer object that is position in file for matched line.
-if not exists, return false.
+存在する場合はその行の開始位置、存在しない場合は false が返ります。
 
-### get lines that matched string with passed prefix
+### 指定文字列から始まる行の取得
 
 ```ruby
 FileBsearch.get_lines(path, prefix)
@@ -52,8 +50,7 @@ file = open(path)
 file.bsearch_lines(prefix)
 ```
 
-if exists, return Array object that include matched lines.
-if not exists, return empty Array object.
+存在する場合はそれらの行の文字列を含んだ配列、存在しない場合は空の配列が返ります。
 
 ## Contributing
 

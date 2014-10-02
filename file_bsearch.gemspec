@@ -6,10 +6,10 @@ require 'file_bsearch/version'
 Gem::Specification.new do |spec|
   spec.name          = "file_bsearch"
   spec.version       = FileBsearch::VERSION
-  spec.authors       = ["TODO: Write your name"]
-  spec.email         = ["TODO: Write your email address"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.authors       = ["indeep-xyz"]
+  spec.email         = ["indeep.xyz@gmail.com"]
+  spec.summary       = %q{binary search for sorted text file.}
+  spec.description   = %q{binary search for sorted text file. it is effective when file size is bigger.}
   spec.homepage      = ""
   spec.license       = "MIT"
 
