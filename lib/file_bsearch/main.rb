@@ -1,3 +1,5 @@
+# coding: utf-8
+
 module FileBsearch
   class << self
 
@@ -14,16 +16,16 @@ module FileBsearch
     end
 
     # args
-    #   target ... File object || path for String object
+    #   file ... File object || path for String object
     #
     # returner
     #   position in target file
-    def index(target, *args, &block)
+    def index(file, needle, encoding = nil, *args, &block)
 
-      file = to_file(target)
+      file = init_file(file, encoding)
 
       # pass to scan method
-      scan(file, *args, &block)
+      scan(file, needle, *args, &block)
     end
   end
 end

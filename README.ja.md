@@ -13,44 +13,66 @@ gem install file_bsearch
 
 ## Usage
 
+### 引数
+
+Usage のドキュメント内で使用する共通の変数について、以下に解説を記します。
+
+#### encoding
+
+文字コードの指定。
+
+utf8, eucjp, jis, sjis か、それぞれの接頭辞を渡してください。省略するとアスキー文字で検索をおこないます。
+
+#### path
+
+ソート済みのテキストファイルのパス。
+
+#### string
+
+検索に用いる文字列。
+
+#### prefix
+
+検索に用いる、接頭辞を表す文字列。
+
 ### 指定文字列の行が、ファイル内に存在するか
 
 ```ruby
-FileBsearch.exist?(path, string)
+FileBsearch.exist?(path, string, encoding)
 
-File.bsearch?(path, string)
+File.bsearch?(path, string, encoding)
 
 file = open(path)
-file.bsearch?(string)
+file.bsearch?(string, encoding)
 ```
 
-存在する場合は true 、存在しない場合は false が返ります。
+存在する場合は true 、存在しない場合は false を返します。
 
 ### 指定文字列の行が、ファイル内のどの位置にあるか
 
 ```ruby
-FileBsearch.index(path, string)
+FileBsearch.index(path, string, encoding)
 
-File.bsearch(path, string)
+File.bsearch(path, string, encoding)
 
 file = open(path)
-file.bsearch(string)
+file.bsearch(string, encoding)
 ```
 
-存在する場合はその行の開始位置、存在しない場合は false が返ります。
+存在する場合はその行の先頭のファイルポインタ位置の数値、存在しない場合は false を返します。
 
 ### 指定文字列から始まる行の取得
 
 ```ruby
-FileBsearch.get_lines(path, prefix)
+FileBsearch.get_lines(path, prefix, encoding)
 
-File.bsearch_lines(path, prefix)
+File.bsearch_lines(path, prefix, encoding)
 
 file = open(path)
-file.bsearch_lines(prefix)
+file.bsearch_lines(prefix, encoding)
 ```
 
-存在する場合はそれらの行の文字列を含んだ配列、存在しない場合は空の配列が返ります。
+存在する場合はそれらの行の文字列を含んだ配列、存在しない場合は空の配列を返します。
 
 ## Contributing
 

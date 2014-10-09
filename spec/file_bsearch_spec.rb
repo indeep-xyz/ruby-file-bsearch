@@ -1,16 +1,19 @@
+# coding: utf-8
+
 require 'spec_helper'
 
 describe FileBsearch do
 
-  let(:path)      { '/tmp/file_bsearch_sample.csv' }
-  let(:correct)   { '9' }
-  let(:incorrect) { '!!!!!' }
-
-  let!(:helper) { MySpecHelper.new(path) }
-
   it 'has a version number' do
     expect(FileBsearch::VERSION).not_to be nil
   end
+end
+
+describe '<ASCII FILE>' do
+
+  let!(:helper)   { MySpecHelper.new }
+  let(:path)      { MySpecHelper::ASCII_SAMPLE_PATH }
+  let(:incorrect) { MySpecHelper::INCORRECT }
 
   describe 'module' do
 
@@ -18,7 +21,8 @@ describe FileBsearch do
 
       it 'when a record is exists' do
 
-        result = FileBsearch.exist?(path, correct)
+        arg    = MySpecHelper::ASCII_ARG
+        result = FileBsearch.exist?(path, arg)
 
         expect(result).to eq(true)
       end
@@ -26,7 +30,6 @@ describe FileBsearch do
       it 'when a record is not exist' do
 
         result = FileBsearch.exist?(path, incorrect)
-
         expect(result).to eq(false)
       end
 
@@ -34,8 +37,8 @@ describe FileBsearch do
 
         File.foreach(path) do |line|
 
-          correct  = line.chomp
-          result = FileBsearch.exist?(path, correct)
+          arg    = line.chomp
+          result = FileBsearch.exist?(path, arg)
 
           expect(result).to eq(true)
         end
@@ -46,10 +49,11 @@ describe FileBsearch do
 
       it 'when returner is number as position in the file' do
 
-        b_result = FileBsearch.index(path, correct)
-        h_result = helper.correct?(correct, b_result)
+        arg    = MySpecHelper::ASCII_ARG
+        pos    = FileBsearch.index(path, arg)
 
-        expect(h_result).to eq(true)
+        result = helper.ascii_correct?(pos, arg)
+        expect(result).to eq(true)
       end
 
       it 'when returner is false' do
@@ -62,15 +66,16 @@ describe FileBsearch do
     describe '#get_lines' do
       it 'when lines is exist that with the prefix' do
 
-        result = FileBsearch.get_lines(path, '1000')
+        arg     = MySpecHelper::ASCII_LIST_ARG
+        correct = MySpecHelper::ASCII_LIST_CORRECT
 
-        expect(result).to eq(%w{1000 10000})
+        result  = FileBsearch.get_lines(path, arg)
+        expect(result).to eq(correct)
       end
 
       it 'when lines is not exist that with the prefix' do
 
-        result = FileBsearch.get_lines(path, '!!!!!')
-
+        result = FileBsearch.get_lines(path, incorrect)
         expect(result).to eq([])
       end
     end
@@ -78,23 +83,25 @@ describe FileBsearch do
 
   describe 'instance method' do
 
-    let(:file) { open(path) }
+    let(:file)  { open(path) }
 
     describe '#bsearch' do
 
       it 'when returner is number as position in the file' do
 
-        b_result = file.bsearch(correct)
-        h_result = helper.correct?(correct, b_result)
+        arg    = MySpecHelper::ASCII_LIST_ARG
+        pos    = file.bsearch(arg)
+        result = helper.ascii_correct?(pos, arg)
 
-        expect(h_result).to eq(true)
+        expect(result).to eq(true)
       end
     end
 
     describe '#bsearch?' do
       it 'when a record is exists' do
 
-        result = file.bsearch?(correct)
+        arg    = MySpecHelper::ASCII_LIST_ARG
+        result = file.bsearch?(arg)
 
         expect(result).to eq(true)
       end
@@ -103,9 +110,11 @@ describe FileBsearch do
     describe '#bsearch_lines' do
       it 'when lines is exist that with the prefix' do
 
-        result = file.bsearch_lines('1000')
+        arg     = MySpecHelper::ASCII_LIST_ARG
+        correct = MySpecHelper::ASCII_LIST_CORRECT
 
-        expect(result).to eq(%w{1000 10000})
+        result = file.bsearch_lines(arg)
+        expect(result).to eq(correct)
       end
     end
   end
@@ -116,17 +125,19 @@ describe FileBsearch do
 
       it 'when returner is number as position in the file' do
 
-        b_result = File.bsearch(path, correct)
-        h_result = helper.correct?(correct, b_result)
+        arg    = MySpecHelper::ASCII_LIST_ARG
+        pos    = File.bsearch(path, arg)
+        result = helper.ascii_correct?(pos, arg)
 
-        expect(h_result).to eq(true)
+        expect(result).to eq(true)
       end
     end
 
     describe '#bsearch?' do
       it 'when a record is exists' do
 
-        result = File.bsearch?(path, correct)
+        arg    = MySpecHelper::ASCII_LIST_ARG
+        result = File.bsearch?(path, arg)
 
         expect(result).to eq(true)
       end
@@ -135,9 +146,80 @@ describe FileBsearch do
     describe '#bsearch_lines' do
       it 'when lines is exist that with the prefix' do
 
-        result = File.bsearch_lines(path, '1000')
+        arg     = MySpecHelper::ASCII_LIST_ARG
+        correct = MySpecHelper::ASCII_LIST_CORRECT
 
-        expect(result).to eq(%w{1000 10000})
+        result = File.bsearch_lines(path, arg)
+        expect(result).to eq(correct)
+      end
+    end
+  end
+end
+
+describe '<UTF-8 FILE>' do
+
+  let!(:helper)   { MySpecHelper.new }
+  let(:path)      { MySpecHelper::MULTIBYTE_SAMPLE_PATH }
+  let(:incorrect) { MySpecHelper::INCORRECT }
+  let(:arg)       { MySpecHelper::MULTIBYTE_ARG }
+  let(:list_arg)  { MySpecHelper::MULTIBYTE_LIST_ARG }
+
+  describe 'module' do
+
+    describe '#exist?' do
+
+      it 'when a record is exists' do
+
+        result = FileBsearch.exist?(path, arg, 'utf-8')
+        expect(result).to eq(true)
+      end
+
+      it 'when a record is not exist' do
+
+        result = FileBsearch.exist?(path, incorrect, 'utf-8')
+        expect(result).to eq(false)
+      end
+
+      it 'when all records are exist' do
+
+        File.foreach(path) do |line|
+
+          arg    = line.chomp
+          result = FileBsearch.exist?(path, arg, 'utf-8')
+
+          expect(result).to eq(true)
+        end
+      end
+    end
+
+    describe '#index' do
+
+      it 'when returner is number as position in the file' do
+
+        pos    = FileBsearch.index(path, arg, 'utf-8')
+        result = helper.multibyte_correct?(pos, arg)
+        expect(result).to eq(true)
+      end
+
+      it 'when returner is false' do
+
+        result = FileBsearch.index(path, incorrect, 'utf-8')
+        expect(result).to eq(false)
+      end
+    end
+
+    describe '#get_lines' do
+      it 'when lines is exist that with the prefix' do
+
+        correct = MySpecHelper::MULTIBYTE_LIST_CORRECT
+        result  = FileBsearch.get_lines(path, list_arg, 'utf-8')
+        expect(result).to eq(correct)
+      end
+
+      it 'when lines is not exist that with the prefix' do
+
+        result = FileBsearch.get_lines(path, incorrect, 'utf-8')
+        expect(result).to eq([])
       end
     end
   end
